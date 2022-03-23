@@ -1,0 +1,37 @@
+#include "WumpusWorldCurrentState.gr".
+#include "WumpusWorldConfiguration.gr".
+#include "WumpusWorldRules.gr".
+#include "WumpusWorldHistory.gr".
+
+
+
+
+
+
+possible(X-1,Y) :- not X=1, currentposition(X,Y).
+possible(X+1,Y) :- not X=n, currentposition(X,Y).
+possible(X,Y-1) :- not Y=1, currentposition(X,Y).
+possible(X,Y+1) :- not Y=n, currentposition(X,Y).
+
+
+
+
+
+
+breeze(X,Y) :- pit(X+1, Y), currentposition(X,Y).
+breeze(X,Y) :- pit(X-1, Y), currentposition(X,Y).
+breeze(X,Y) :- pit(X, Y+1), currentposition(X,Y).
+breeze(X,Y) :- pit(X, Y-1), currentposition(X,Y).
+
+stench(X,Y) :- wumpus(X+1, Y), currentposition(X,Y).
+stench(X,Y) :- wumpus(X-1, Y), currentposition(X,Y).
+stench(X,Y) :- wumpus(X, Y+1), currentposition(X,Y).
+stench(X,Y) :- wumpus(X, Y-1), currentposition(X,Y).
+
+glitter(X,Y) :- gold(X, Y), currentposition(X,Y).
+
+
+possiblemoving(X,Y,new,risky):- possible(X,Y), currentposition(A,B), breeze(A,B), not old(X,Y).
+possiblemoving(X,Y,new,risky):- possible(X,Y), currentposition(A,B), stench(A,B), not old(X,Y).
+possiblemoving(X,Y,new,safe):- possible(X,Y), currentposition(A,B), not stench(A,B), not breeze(A,B), not old(X,Y).
+possiblemoving(X,Y,old,safe):- possible(X,Y),  old(X,Y).

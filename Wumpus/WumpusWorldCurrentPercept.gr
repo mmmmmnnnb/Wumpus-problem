@@ -1,0 +1,5 @@
+#include "WumpusWorld.gr".
+
+#show stench/2.
+#show breeze/2.
+#show glitter/2.
